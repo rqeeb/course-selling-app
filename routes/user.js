@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const userRouter = Router();
-const userModel = require("../db");
+const { userModel } = require("../db");
+const jwt = require("jsonwebtoken");
+const JWT_USER_PASSWORD = process.env.JWT_USER_PASSWORD;
 
 userRouter.post("/signup", async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
@@ -14,7 +16,7 @@ userRouter.post("/signup", async (req, res) => {
       lastName: lastName,
     });
 
-    res.json({
+    res.status(200).json({
       message: "signup suceed",
     });
   } catch (e) {
