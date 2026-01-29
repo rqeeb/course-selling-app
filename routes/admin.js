@@ -75,10 +75,39 @@ adminRouter.post("/course", adminMiddleware, async (req, res) => {
 });
 
 //to update a course!
-adminRouter.put("/course", (req, res) => {
-  res.json({
-    message: "signin endpoint",
-  });
+adminRouter.put("/course", async (req, res) => {
+  try {
+    const adminId = req.userId;
+    const { title, description, imageUrl, price, courseId } = req.body;
+
+    const course = await courseModel.findOne({
+      _id: courseId,
+      creatorId: adminId,
+    });
+
+    if (!course) {
+      return res.status(404).json({
+        message: "Course not found or unauthorized",
+      });
+    }
+
+    course.title = title;
+    course.description = description;
+    course.imageUrl = imageUrl;
+    course.price = price;
+
+    await course.save();
+
+    res.json({
+      message: "Course updated successfully",
+      courseId: course._id,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Something went wrong",
+      error: err.message,
+    });
+  }
 });
 
 module.exports = {

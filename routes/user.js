@@ -29,7 +29,7 @@ userRouter.post("/signup", async (req, res) => {
 userRouter.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
-  //Password in DB is hashed but user provided NOT HASHED version - so UNHASH & compare.
+  //Password in DB is hashed but user provided NOT HASHED version - so UNHASH & compare..... ... ... ..
 
   const userExists = await userModel.findOne({
     email: email,
